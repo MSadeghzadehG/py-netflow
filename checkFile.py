@@ -48,10 +48,11 @@ class CheckFileService(UDPService):
                 )
                 try:
                     response = self.get_message(self.client_socket)
-                    print(response)
+                    # print(response)
                     if response["message"] == "True":
                         response_times.append((node, time() - start_time))
                 except timeout:
+                    print(node + " node timed out")
                     pass
         print(response_times)
         if response_times:
