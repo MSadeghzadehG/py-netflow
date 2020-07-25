@@ -1,6 +1,7 @@
 import ast
 
 from time import sleep
+
 from threadPool import ThreadPool
 from udpService import UDPService
 
@@ -35,8 +36,8 @@ class DiscoveryService(UDPService):
             ):
                 self.nodes.append(discovered_node)
 
-    def parse_message(self, message, address):
-        self.update_nodes(ast.literal_eval(message.decode('utf-8')))
+    def process_server_response(self, message, address):
+        self.update_nodes(ast.literal_eval(message))
         print(
             "Nodes list updated by Discovery service's server: " +
             str(self.nodes)
@@ -44,6 +45,9 @@ class DiscoveryService(UDPService):
 
     def send_nodes_to_others(self):
         message = str(self.nodes)
-        bytes_to_send = str.encode(message, 'utf-8')
         for node in self.nodes:
-            self.send_message(node, bytes_to_send)
+            self.send_message(
+                str_message=message,
+                address=(node, self.port),
+                socket=self.client_socket
+            )
