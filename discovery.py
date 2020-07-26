@@ -3,7 +3,7 @@ import ast
 from time import sleep
 
 from threadPool import ThreadPool
-from udpService import UDPService
+from services.udpService import UDPService
 
 
 class DiscoveryService(UDPService):
